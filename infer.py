@@ -111,7 +111,7 @@ def kaggle_infer(kaggle_path=CUR_PATH + '/data/kaggle_infer100/'):
 
 if __name__ == '__main__':
     """infer test"""
-    img_file = CUR_PATH + '/data/kaggle_infer/5.jpg'
+    img_file = CUR_PATH + '/data/kaggle_infer100/5.jpg'
     opts, args = getopt.getopt(sys.argv[1:], "p:", ["file_name="])
     if len(args) > 0 and len(args[0]) > 4:
         img_file = args[0]
