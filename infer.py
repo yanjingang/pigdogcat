@@ -48,7 +48,7 @@ def infer(img_file='', params_dirname=CUR_PATH, use_cuda=False):
     result = inferencer.infer({'img': img})
     result = numpy.where(result[0][0] > 0.05, result[0][0], 0)  # 概率<5%的直接设置为0
     print(result)
-    label = numpy.argmax(result)
+    label = int(numpy.argmax(result))
     label_name = label_list[label]
     weight = result[label]
 
