@@ -13,6 +13,7 @@ from __future__ import print_function
 import sys
 import os
 import getopt
+import logging
 import paddle.fluid as fluid
 from paddle.fluid.contrib.trainer import *
 from paddle.fluid.contrib.inferencer import *
@@ -24,7 +25,6 @@ BASE_PATH = os.path.realpath(CUR_PATH + '/../../../')
 sys.path.append(BASE_PATH)
 #print(CUR_PATH, BASE_PATH)
 from machinelearning.lib import utils
-from machinelearning.lib import logger
 import train as dogcat_train
 
 # label名称
@@ -39,7 +39,7 @@ def infer(img_file='', params_dirname=CUR_PATH, use_cuda=False):
         return 1, 'file_name is empty', {}
 
     place = fluid.CUDAPlace(0) if use_cuda else fluid.CPUPlace()
-    logger.debug('param_path:' + params_dirname + '/model')
+    logging.debug('param_path:' + params_dirname + '/model')
     inferencer = Inferencer(infer_func=dogcat_train.image_classification_network, param_path=params_dirname + '/model', place=place)
 
     # 预测
