@@ -25,7 +25,7 @@ CUR_PATH = os.path.dirname(os.path.abspath(__file__))
 BASE_PATH = os.path.realpath(CUR_PATH + '/../../')
 sys.path.append(BASE_PATH)
 #print(CUR_PATH, BASE_PATH)
-from machinelearning.lib import logger
+from machinelearning.lib import utils
 import infer as dogcat_infer
 
 class ApiImageDogCat(tornado.web.RequestHandler):
@@ -36,10 +36,10 @@ class ApiImageDogCat(tornado.web.RequestHandler):
         try:
             result = self.execute()
         except:
-            logger.error('execute fail ' + logger.get_trace(), ApiImageDogCat)
+            logging.error('execute fail ' + utils.get_trace())
             result = {'code': 1, 'msg': '查询失败'}
-        logger.info('API RES[' + self.request.path + '][' + self.request.method + ']['
-                      + str(result['code']) + '][' + str(result['msg']) + '][' + str(result['data']) + ']', ApiImageDogCat)
+        logging.info('API RES[' + self.request.path + '][' + self.request.method + ']['
+                      + str(result['code']) + '][' + str(result['msg']) + '][' + str(result['data']) + ']')
         self.write(json.dumps(result))
 
     def post(self):
@@ -47,16 +47,16 @@ class ApiImageDogCat(tornado.web.RequestHandler):
         try:
             result = self.execute()
         except:
-            logger.error('execute fail ' + logger.get_trace(), ApiImageDogCat)
+            logging.error('execute fail ' + utils.get_trace())
             result = {'code': 1, 'msg': '查询失败'}
-        logger.info('API RES[' + self.request.path + '][' + self.request.method + ']['
-                      + str(result['code']) + '][' + str(result['msg']) + ']', ApiImageDogCat)
+        logging.info('API RES[' + self.request.path + '][' + self.request.method + ']['
+                      + str(result['code']) + '][' + str(result['msg']) + ']')
         self.write(json.dumps(result))
 
     def execute(self):
         """执行业务逻辑"""
-        logger.info('API REQUEST INFO[' + self.request.path + '][' + self.request.method + ']['
-                      + self.request.remote_ip + '][' + str(self.request.arguments) + ']', ApiImageDogCat)
+        logging.info('API REQUEST INFO[' + self.request.path + '][' + self.request.method + ']['
+                      + self.request.remote_ip + '][' + str(self.request.arguments) + ']')
         img_file = self.get_argument('img_file', '')
         if img_file == '':
             return {'code': 2, 'msg': 'img_file不能为空'}
@@ -65,10 +65,10 @@ class ApiImageDogCat(tornado.web.RequestHandler):
         try:
             ret, msg, res = dogcat_infer.infer(img_file)
             if ret != 0:
-                logger.error('execute fail [' + img_file + '] ' + msg, ApiImageDogCat)
+                logging.error('execute fail [' + img_file + '] ' + msg)
                 return {'code': 4, 'msg': '查询失败'}
         except:
-            logger.error('execute fail [' + img_file + '] ' + logger.get_trace(), ApiImageDogCat)
+            logging.error('execute fail [' + img_file + '] ' + utils.get_trace())
             return {'code': 5, 'msg': '查询失败'}
 
         # 组织返回格式
@@ -78,6 +78,11 @@ class ApiImageDogCat(tornado.web.RequestHandler):
 if __name__ == '__main__':
     """服务入口"""
     port = 8021
+
+    # log init
+    log_file = ApiImageDogCat.__name__.lower()  # + '-' + str(os.getpid())
+    utils.init_logging(log_file=log_file, log_path=CUR_PATH)
+    print("log_file: {}".format(log_file))
 
     # 路由
     app = tornado.web.Application(
