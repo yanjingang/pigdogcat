@@ -23,8 +23,8 @@ CUR_PATH = os.path.dirname(os.path.abspath(__file__))
 BASE_PATH = os.path.realpath(CUR_PATH + '/../../../')
 sys.path.append(BASE_PATH)
 # print(CUR_PATH, BASE_PATH)
-from machinelearning.lib.resnet import resnet_cifar10
-from machinelearning.lib import utils
+from dps.resnet import resnet_cifar10
+from dps import utils
 
 
 def image_classification_network():

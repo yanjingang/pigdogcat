@@ -4,7 +4,7 @@
 File: api_dog_cat.py
 Desc: 猫狗大战 ml模型 API 封装
 Demo: 
-    cd /home/work/piglab/webservice/service/ && nohup python api_dog_cat.py > log/api_dog_cat.log &
+    nohup python api_dog_cat.py > log/api_dog_cat.log &
     #猫狗大战
     http://www.yanjingang.com:8021/piglab/image/dog_cat?img_file=/home/work/piglab/machinelearning/image/dog_cat/data/kaggle_infer/1.jpg
 
@@ -26,7 +26,7 @@ CUR_PATH = os.path.dirname(os.path.abspath(__file__))
 BASE_PATH = os.path.realpath(CUR_PATH + '/../../')
 sys.path.append(BASE_PATH)
 #print(CUR_PATH, BASE_PATH)
-from machinelearning.lib import utils
+from dps import utils
 import infer as dogcat_infer
 
 class ApiImageDogCat(tornado.web.RequestHandler):
